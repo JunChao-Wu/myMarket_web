@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { API } from '../axios/_api';
 export default {
   data() {
     return {
@@ -46,7 +47,7 @@ export default {
   methods: {
     async category_get() {
       let categoryList = [];
-      await this._axios.post('/category/getCategory').then(res => {
+      await this._axios.post(API.category.get).then(res => {
         let dataTemp = res.data;
         dataTemp.forEach(obj => {
           if (obj.id !== 1) {
@@ -62,7 +63,7 @@ export default {
       /* 提交内容至后台，返回数据并刷新组件 */
       let addObj = {};
       addObj.name = this.category_name;
-      await this._axios.post('/category/addCategory', addObj).then(res => {
+      await this._axios.post(API.category.add, addObj).then(res => {
         if (res.data.msg == 'add success') {
           this.category_name = '';
         }
@@ -73,7 +74,7 @@ export default {
     async category_delete() {
       let deleteObj = {};
       deleteObj.id = this.category_id;
-      await this._axios.post('/category/deleteCategory', deleteObj);
+      await this._axios.post(API.category.delete, deleteObj);
       this.updateKey += 1;
     },
 

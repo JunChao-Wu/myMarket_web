@@ -175,6 +175,7 @@ import TableColumn from './table/TableColumn';
 import Pagination from './pagination/pagination';
 import eSelect from './select/select.vue';
 import {deepCloneObject} from './util/util';
+import { API } from './axios/_api';
 export default {
   components: {
     ListTable,
@@ -244,7 +245,7 @@ export default {
   methods: {
     /* 分类列表获取 */
     async category_get() {
-      await this._axios.post('/category/getCategory').then(res => {
+      await this._axios.post(API.category.get).then(res => {
         this.categoryList = res.data;
         this.categoryList.map(obj => {
           // 将数据的属性修改为适合eSelect组件使用
@@ -436,6 +437,7 @@ export default {
           case 'categoryID':
             inspectionObj[inspecitonName] = refs[input].value !== '';
             break;
+          default: break;
         }
         // 受限表单值不符合规范时，显示错误提示
         if(!inspectionObj[inspecitonName]) {
@@ -476,7 +478,7 @@ export default {
         })
         return;
       }
-      await this._axios.post('/purchase/deletePurchase', seletions).then(res => {
+      await this._axios.post(API.purchase.delete, seletions).then(res => {
         if(res.data.msg !== 'delete success') {
           console.log('failed')
         }
@@ -504,7 +506,7 @@ export default {
       }, {});
       purchaseObj.id = id;
       
-     await this._axios.post('/purchase/editPurchase', purchaseObj).then(res => {
+     await this._axios.post(API.purchase.edit, purchaseObj).then(res => {
         if (res.data.msg !== 'edit success') {
           console.log('failed')
         }
@@ -534,7 +536,7 @@ export default {
       }, {});
 
       /* 发送数据并接收返回信息 */
-      await this._axios.post('/purchase/addPurchase', addObj).then(res => {
+      await this._axios.post(API.purchase.add, addObj).then(res => {
         if (res.data.msg !== 'add success') {
           console.log('failed')
         }
@@ -559,7 +561,7 @@ export default {
       //   getObj.search = e.target.value;
       // }
       getObj.pageObj = pageObj;
-      this._axios.post('/purchase/getPurchase', getObj).then(res => {
+      this._axios.post(API.purchase.get, getObj).then(res => {
         this.dataSource = res.data.data;
         this.total = res.data.total;
       })

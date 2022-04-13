@@ -18,7 +18,7 @@
       <div
         class="text-container"
         :class="{'no-content': !choosedContent}"
-        @click="handlerChange">{{ choosedContent ? choosedContent : "请选择分类" }}</div>
+        @click="handlerChange">{{ choosedContent ? choosedContent : `请选择${initOption.placeholder || ''}` }}</div>
       <ul
         :style="{width:width}"
         class="options-block">
@@ -52,11 +52,11 @@ export default {
       require: true,
       type: Array
     },
-    // 首选项 接收 {id,name}属性的对象
+    // 首选项 接收 {id,name, placeholder}属性的对象
     initOption: {
       require: true,
       type: Object
-    }
+    },
   },
   computed: {
     selectInputStyle() {

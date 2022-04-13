@@ -22,7 +22,7 @@
 </template>
 
 <script>
-// import {checkNumber} from '../util/_util_inputs';
+import { API } from '../axios/_api';
 export default {
   data() {
     return {
@@ -59,12 +59,12 @@ export default {
       }
       let editObj = {};
       editObj.warningLine = this.warningLine;
-      await this._axios.post('/warningLine/editWarningLine', editObj)
+      await this._axios.post(API.warningLine.edit, editObj)
       this.warningKey += 1;
     },
 
     async toGetLimit() {
-      await this._axios.post('/warningLine/getWarningLine').then(res => {
+      await this._axios.post(API.warningLine.get).then(res => {
         if (res.data.msg == 'get failed') {
           return;
         }

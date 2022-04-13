@@ -70,7 +70,8 @@ import ListTable from './table/ListTable.vue';
 import TableColumn from './table/TableColumn';
 import Pagination from './pagination/pagination';
 import eSelect from './select/select.vue';
-// import { cloneArr } from './util/util';
+import { A, API } from '../components/axios/_api';
+
 export default {
   data() {
     return {
@@ -81,7 +82,7 @@ export default {
       total: 0,
       isClearCheckbox: false,
       optionList: [],
-      initOption: {},
+      initOption: {placeholder: "分类"},
       currentPage: 1,
       pageSize: 20,
       goodsSearchName: '',
@@ -101,7 +102,7 @@ export default {
     // 获取select组件的数据
     async getPurchaseNameList() {
       let resultList = [];
-      await this._axios.post('/purchase/getPurchaseNameList').then(res => {
+      await this._axios.post(API.purchase.getPurchaseList).then(res => {
         res.data.forEach(obj => {
           let tempObj = {};
           tempObj.value = obj.goodName;
@@ -146,7 +147,7 @@ export default {
       }
       let addObj = {};
       addObj.goodName = goodName;
-      await this._axios.post('/goods/addGoods', addObj).then(res => {
+      await this._axios.post(API.goods.add, addObj).then(res => {
         if (res.data.msg == 'add success' || res.data.msg == 'goods is existed') {
           this.initOption = {};
         }
@@ -154,13 +155,13 @@ export default {
       this.updateKey += 1;
     },
 
-    // 搜索goods
+    // 搜索goods,可以和下面的方法合并
     goodsSearch() {
       let getObj = {};
       getObj.currentPage = this.currentPage;
       getObj.pageSize = this.pageSize;
       getObj.search = this.goodsSearchName;
-      this._axios.post('/goods/getGoods', getObj).then(res => {
+      this._axios.post(API.goods.get, getObj).then(res => {
         console.log(res)
         this.dataSource = res.data;
       })
@@ -168,7 +169,7 @@ export default {
 
     // 获取goods列表
     goods_get(pageObj) {
-      this._axios.post('/goods/getGoods', pageObj).then(res => {
+      this._axios.post(API.goods.get, pageObj).then(res => {
         console.log(res)
         if (res.data.msg) {
           return;
@@ -201,7 +202,7 @@ export default {
       let deleteObj = {};
       deleteObj.id = this.selections[0];
       let judge = false;
-      await this._axios.post('/goods/deleteGoods', deleteObj).then(res => {
+      await this._axios.post(API.goods.delete, deleteObj).then(res => {
         console.log(res)
         if (res.data.msg == 'delete success') {
           judge = true;
@@ -334,7 +335,7 @@ export default {
       width: 100px;
       line-height: 30px;
       border: none;
-      background-color: rgba(@basered, 0.9);
+      background-color: rgba(@basered, 0.7);
       border-radius: 20px;
       font-size: 0.9em;
       cursor: pointer;

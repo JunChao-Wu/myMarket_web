@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { BASE_API } from './_api';
 
 let _axios = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: BASE_API,
   timeout: 10000
 })
 
@@ -10,23 +11,15 @@ let _axios = axios.create({
 //   return config
 // }, err)
 
-// /* 接收的拦截处理 */
+// /* response的拦截处理 */
 // _axios.interceptors.response.use((response) => {
-//   const res = response.data;
-//   if(res.code !== 1 && res.code !== 200) {
-//     console.log(res.message || res.msg)
-//     if(res.code === 401 || res.code ===403 || res.code === 999) {
-//       console.log('验证身份失败')
-//     }
-//     return Promise.reject('error')
-//   } else {
-//     return res
-//   }
+//   const res = response;
+//   console.log("🚀 ~ file: _axios.js ~ line 16 ~ _axios.interceptors.response.use ~ res", res)
 // }, err)
 
 // /* 错误处理 */
 // const err = (error) => {
-//   if(error.response) {
+//   if(error) {
 //     const data = error.response.data;
 //     if(error.response.status === 403) {
 //       /* 403 处理 */
@@ -39,8 +32,6 @@ let _axios = axios.create({
 //   }
 //   return Promise.reject(error)
 // }
-
-
 
 
 export default _axios;
